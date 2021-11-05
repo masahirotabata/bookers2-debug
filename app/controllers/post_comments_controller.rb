@@ -2,9 +2,12 @@ class PostCommentsController < ApplicationController
     
     
   def new
-    @book = Book.find(params[:book_id])
-    @posts = @book.post_comments
+    @book_show = Book.find(params[:book_id])
+    @posts = @book_show.post_comments
     @post_comments = PostComment.new
+    @user = @book_show.user
+    @books = @user.books
+    @book = Book.new
     
   end
     
