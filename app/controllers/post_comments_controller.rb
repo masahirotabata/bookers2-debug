@@ -14,6 +14,13 @@ class PostCommentsController < ApplicationController
   def create
       comment = current_user.post_comments.new(post_params)
       comment.book_id = params[:book_id]
+      
+    @book_show = Book.find(params[:book_id])
+    @posts = @book_show.post_comments
+    @post_comments = PostComment.new
+    @user = @book_show.user
+    @books = @user.books
+    @book = Book.new
   
       
     if comment.save
@@ -21,7 +28,7 @@ class PostCommentsController < ApplicationController
     redirect_to request.referer
     
     else
-      render :new
+      render :new,　user: @user,book: @book_show
       
     end
   end

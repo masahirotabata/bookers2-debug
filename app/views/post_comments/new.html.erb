@@ -1,4 +1,6 @@
-<div class='container px-5 px-sm-0'>
+
+  
+   <div class='container px-5 px-sm-0'>
   <div class='row'>
     <div class='col-md-3'>
       <h2>User info</h2>
@@ -7,44 +9,31 @@
       <%= render 'users/form', book: @book %>
     </div>
     <div class='col-md-8 offset-md-1'>
-      <h2>Books</h2>
-     <%= form_with(model:[@book,@post_comments],url: book_post_comments_path(book_id: @book_show.id,id: @book_show.id), local:true) do |f| %>
-  <%= f.text_field :comment %>
-  <br>
+      <%= render 'books/show',book: @book_show %>
+    </div>
+    </div>
+    <table class='table table-hover table-inverse'>
+       <thead>
+       </thead>
+       <tbody>
+        <tr>
+     <% @posts.each do|post| %>
+      <td><%= post.comment %></td>
+      <td><%= link_to 'Destroy',book_post_comment_path(book_id: @book_show.id,id: post.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%>
+      <div class='col-md-8 offset-md-1'>
+        <% end %>
+      </td>
+     </tr>
+    </tbody>
+   </table>
+   
+   <div class='col-md-8 offset-md-1'>
+  <tbody><%= form_with(model:[@book,@post_comments],url: book_post_comments_path(book_id: @book_show.id,id: @book_show.id), local:true) do |f| %>
+  <%= render 'layouts/errors', obj: f.object  %>
+  <%= f.text_area :comment %>
   <%= f.submit '送信' %>
 <% end %>
-  
-    </div>
-  </div>
-</div>
-
-    <tbody>
-   
-      <tr>
-        <td><%= link_to user_path(@book_show.user) do %>
-          <%= attachment_image_tag(@book.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg") %>
-          <% end %>
-        </td>
-        <td><%= link_to @book_show.title, book_path(@book_show), class: "book_#{@book_show.id}" %></td>
-        <td><%= @book_show.body %></td>
-        <td><% if @book_show.favorited_by?(current_user) %>
-   <%= link_to book_favorites_path(@book_show), method: :DELETE do %>
-   <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
-   <%= @book_show.favorites.count %>like
-   <% end %>
-<% else %>
-  <%= link_to book_favorites_path(@book_show) , method: :POST do %>
-  <i class="fa fa-heart-o" aria-hidden="true"></i>
-  <%= @book_show.favorites.count %>like
-  <% end %>
-<% end %></td>
-        <td>コメント数:<%= @book_show.post_comments.count %></td>
-     <div class='col-md-8 offset-md-1'>
-     <% @posts.each do|post| %>
-      <%= post.comment %>
-      </div>
-      <td><%= link_to 'Destroy',book_post_comment_path(book_id: @book_show.id,id: post.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
-      <% end %>
-     </tr>
   </tbody>
+ </div>
+</div>
   
