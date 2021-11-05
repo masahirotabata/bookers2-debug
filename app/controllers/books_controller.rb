@@ -2,19 +2,19 @@ class BooksController < ApplicationController
   
   def set_current_user
     @current_user ||= User.find_by(id: session[:user_id])
-    end
+  end
 
   def show
     @book_new = Book.new
     @book = Book.find(params[:id])
     @user = @book.user
+    @posts = @book.post_comments
   end
 
   def index
     @book = Book.new
     @books = Book.all
     @user = current_user
-   
   end
 
   def create
@@ -67,4 +67,4 @@ class BooksController < ApplicationController
     params.require(:book).permit(:title,:body)
   end
 
-end
+ end

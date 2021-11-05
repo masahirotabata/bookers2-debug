@@ -14,13 +14,31 @@
             <%= attachment_image_tag(@book.user.profile_image_id, :profile_image_id, :fill, 100, 100, fallback: "no-image-icon.jpg") %><br>
             <%= @book.user.name %>
             <% end %>
+            
           </td>
           <td><%= link_to @book.title, book_path(@book) %></td>
           <td><%= @book.body %></td>
           
+           <% if @book.favorited_by?(current_user) %>
+   <%= link_to book_favorites_path(@book), method: :DELETE do %>
+   <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+   <%= @book.favorites.count %>like
+   <% end %>
+<% else %>
+  <%= link_to book_favorites_path(@book) , method: :POST do %>
+  <i class="fa fa-heart-o" aria-hidden="true"></i>
+  <%= @book.favorites.count %>like
+  <% end %>
+<% end %>
+
+   <td>コメント数:<%= @book.post_comments.count %></td>
+   
+  
+          
           <% if @user.id == current_user.id %>
           <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success edit_book_#{@book.id}" %></td>
           <td><%= link_to 'Destroy', book_path(@book), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{@book.id}"%></td>
+          <td><%= link_to 'Comment',new_book_post_comment_path(@book) %></td>
        　 <% end %> 
         </tr>
       </table>

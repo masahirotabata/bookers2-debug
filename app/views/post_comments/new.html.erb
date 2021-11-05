@@ -1,0 +1,40 @@
+
+
+
+<%= form_with(model:[@book,@post_comments],url: book_post_comments_path(@book), local:true) do |f| %>
+  <%= f.text_field :comment %>
+  <br>
+  <%= f.submit '送信' %>
+<% end %>
+
+      
+      <tbody>
+   
+      <tr>
+        <td><%= link_to user_path(@book.user) do %>
+          <%= attachment_image_tag(@book.user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg") %>
+          <% end %>
+        </td>
+        <td><%= link_to @book.title, book_path(@book), class: "book_#{@book.id}" %></td>
+        <td><%= @book.body %></td>
+        <td><% if @book.favorited_by?(current_user) %>
+   <%= link_to book_favorites_path(@book), method: :DELETE do %>
+   <i class="fa fa-heart" aria-hidden="true" style="color: red;"></i>
+   <%= @book.favorites.count %>like
+   <% end %>
+<% else %>
+  <%= link_to book_favorites_path(@book) , method: :POST do %>
+  <i class="fa fa-heart-o" aria-hidden="true"></i>
+  <%= @book.favorites.count %>like
+  <% end %>
+<% end %></td>
+        <td>コメント数:<%= @book.post_comments.count %></td>
+     <div class='col-md-8 offset-md-1'>
+     <% @posts.each do|post| %>
+      <%= post.comment %>
+      </div>
+      <td><%= link_to 'Destroy',book_post_comment_path(book_id: @book.id,id: post.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{post.id}"%></td>
+      <% end %>
+     </tr>
+  </tbody>
+  
