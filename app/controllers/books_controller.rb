@@ -15,7 +15,8 @@ class BooksController < ApplicationController
     @book = Book.new
     @books = Book.all
     @user = current_user
-  end
+    @books_serch = @books.where('location LIKE ?', "%#{params[:search]}%") if params[:search].present?  #この行を追記
+end
 
   def create
     @book = Book.new(book_params)
