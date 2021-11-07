@@ -1,4 +1,7 @@
 <div class='container px-5 px-sm-0'>
+  <% if @user.id == current_user.id %>
+  <%= render 'searches/search' %>
+   <% end %>
   <div class='row'>
     <div class='col-md-3'>
       <h2>User info</h2>
